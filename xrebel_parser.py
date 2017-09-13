@@ -197,13 +197,14 @@ def plot(labels, data):
     plt.show()
 
 def clustering(data):
-    kmeans = KMeans(random_state=0).fit(data)
+    kmeans = KMeans(n_clusters=2, random_state=0).fit(data)
     
     return kmeans.labels_
 
 
 def main():
-    with open('login.json') as data_file:    
+    scenario = "contrato"
+    with open(scenario + ".json") as data_file:    
         data = json.load(data_file)
 
       
@@ -211,7 +212,7 @@ def main():
         parser = RequestParser(request)
         request_data = parser.parse()
         if request_data is not None:           
-            request_data.to_csv("result.csv", index=False)
+            request_data.to_csv(scenario + "-data.csv", index=False)
            
             print("Queries: %f" % (sum(request_data.values[:, 1])))
             print("Rows: %f" % (sum(request_data.values[:, 2])))
@@ -224,7 +225,8 @@ def main():
             
             clusters = pandas.DataFrame({"Clusters": labels, 
                                          "Methods":request_data.values[:, 0]})
-            clusters.to_csv("clusters.csv", index=False)
+            
+            clusters.to_csv(scenario + "-clusters.csv", index=False)
             
 if __name__ == "__main__":
  
